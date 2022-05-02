@@ -3,11 +3,16 @@ export enum LR {
 	R
 }
 
-export interface Glass {
+export interface Eye {
 	lr: LR
-	count: number
-	degreeS: number
-	degreeC: number
+	glassCount: number
+	degreeS: string 
+	degreeC: string 
+	axis: number
+	pd: number
+	ph: number
+	glassBorder: number
+	glassHeight: number
 }
 
 export default interface Glasses {
@@ -17,13 +22,18 @@ export default interface Glasses {
 	orderID: string
 	phone: string
 	indexOfRefraction: number
-	brand: string
-	factor: string
-	axis: number
-	glass: Glass[]
+	frameBrand: string
+	frameModel: string
+	framePrice: number
+	glassBrand: string
+	glassModel: string
+	glassPrice: number
+	eyes: Eye[]
+	sumPD: number
+	amount: number
 	comment: string
 }
 
-export interface GlassesRow extends Omit<Glasses, 'glass'>, Glass {
+export interface GlassesRow extends Omit<Glasses, 'eye'>, Eye {
 	rowKey: string
 }
