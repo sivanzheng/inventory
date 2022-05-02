@@ -99,6 +99,7 @@ export default function Classes() {
 				} else {
 					message.error('删除失败')
 				}
+				getList(page)
 			}
 		});
 	}
