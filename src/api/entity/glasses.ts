@@ -3,7 +3,7 @@
 
 import { Column, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { EntityModel } from '@midwayjs/orm';
-import { Glass } from '../../model/Glasses'
+import { Glass } from '@src/api/models/Glasses'
 
 @Index('id_UNIQUE', ['id'], { unique: true })
 @EntityModel('glasses', { schema: 'inventory' })

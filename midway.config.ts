@@ -5,5 +5,10 @@ import { defineConfig } from '@midwayjs/hooks-kit';
 export default defineConfig({
   vite: {
     plugins: [react()],
+    resolve: {
+      alias: {
+        '@src': path.resolve(__dirname, './src')
+      }
+    }
   },
 });

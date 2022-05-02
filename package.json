@@ -1,5 +1,5 @@
 {
-  "name": "hooks-react-starter",
+  "name": "inventory",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "@midwayjs/rpc": "^3.0.0",
     "ahooks": "^3.1.2",
     "antd": "^4.20.2",
+    "dotenv": "^16.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",

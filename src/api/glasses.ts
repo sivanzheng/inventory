@@ -2,7 +2,7 @@ import { Api, Get, Post, Delete, Params, Query, useContext } from '@midwayjs/hoo
 import type { Context } from '@midwayjs/koa'
 import { useEntityModel } from '@midwayjs/orm';
 import { Like, FindOptionsWhere, Between } from 'typeorm'
-import Glasses from '../model/Glasses'
+import Glasses from '@src/api/models/Glasses'
 import { Glasses as GlassesEntity } from './entity/glasses'
 
 export const createOrSaveGlasses = Api(

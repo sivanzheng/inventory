@@ -5,4 +5,4 @@ dist-ssr
 *.local
 build
 output
-config.json
+.env

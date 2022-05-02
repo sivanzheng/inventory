@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "allowJs": false,
+    "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": false,
@@ -16,9 +16,17 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": ["vite/client"],
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
-  "include": ["./src", "dist/host.js"],
+  "include": [
+    "**/*",
+    "dist/host.js",
+    "src/config/config.json"
+  ],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"

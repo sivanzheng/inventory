@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Form, DatePicker, Input, InputNumber, Divider, Button, ConfigProvider } from 'antd'
 import moment from 'moment'
 import zhCN from 'antd/lib/locale/zh_CN';
-import Glasses, { LR, Glass } from '../../model/Glasses'
+import Glasses, { LR, Glass } from '@src/api/models/Glasses'
 
 const { Item } = Form
 

@@ -5,9 +5,9 @@ import zhCN from 'antd/lib/locale/zh_CN';
 import { cloneDeep } from 'lodash'
 import { Table, TablePaginationConfig, Button, message, Modal, Space, Form, Input, Divider, DatePicker, ConfigProvider } from 'antd'
 import { ExclamationCircleOutlined, PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons';
-import { getGlassesList, createOrSaveGlasses, deleteGlasses, searchGlasses } from '../../api/glasses'
-import Glasses, { LR, GlassesRow } from '../../model/Glasses'
-import { PageRequest } from '../../model/Page'
+import { getGlassesList, createOrSaveGlasses, deleteGlasses, searchGlasses } from '@src/api/glasses'
+import Glasses, { LR, GlassesRow } from '@src/api/models/Glasses'
+import { PageRequest } from '@src/api/models/Page'
 import GlassesForm from './GlassesForm'
 
 const toPageQuery = (pageReq: PageRequest) => ({
