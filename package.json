@@ -1,0 +1,34 @@
+{
+  "name": "hooks-react-starter",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "hooks start",
+    "dev": "hooks dev",
+    "build": "hooks build"
+  },
+  "dependencies": {
+    "@midwayjs/hooks": "^3.0.0",
+    "@midwayjs/hooks-kit": "^3.0.0",
+    "@midwayjs/koa": "^3.1.0",
+    "@midwayjs/orm": "^3.3.5",
+    "@midwayjs/rpc": "^3.0.0",
+    "ahooks": "^3.1.2",
+    "antd": "^4.20.2",
+    "isomorphic-unfetch": "^3.1.0",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "q": "^1.5.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "typeorm": "^0.3.6"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.182",
+    "@types/q": "^1.5.5",
+    "@types/react": "^17.0.13",
+    "@types/react-dom": "^17.0.8",
+    "@vitejs/plugin-react": "^1.1.3",
+    "typescript": "^4.3.5"
+  }
+}
