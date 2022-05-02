@@ -3,7 +3,7 @@ import type { Context } from '@midwayjs/koa'
 import { useEntityModel } from '@midwayjs/orm'
 import { Like, FindOptionsWhere, Between } from 'typeorm'
 import Glasses from '@src/api/models/Glasses'
-import { Glasses as GlassesEntity } from './entity/glasses'
+import { Glasses as GlassesEntity } from './entity/Glasses'
 
 export const createOrSaveGlasses = Api(
     Post('/glasses'),
@@ -17,10 +17,15 @@ export const createOrSaveGlasses = Api(
             glassesEntity.orderID = glasses.orderID.trim()
             glassesEntity.phone = glasses.phone.trim()
             glassesEntity.indexOfRefraction = glasses.indexOfRefraction
-            glassesEntity.brand = (glasses.brand || '').trim()
-            glassesEntity.factor = glasses.factor
-            glassesEntity.axis = glasses.axis
-            glassesEntity.glass = glasses.glass
+            glassesEntity.frameBrand = (glasses.frameBrand || '').trim()
+            glassesEntity.frameModel = (glasses.frameModel || '').trim()
+            glassesEntity.framePrice = glasses.framePrice
+            glassesEntity.glassBrand = (glasses.glassBrand || '').trim()
+            glassesEntity.glassModel = (glasses.glassModel || '').trim()
+            glassesEntity.glassPrice = glasses.glassPrice
+            glassesEntity.eyes = glasses.eyes
+            glassesEntity.sumPD = glasses.sumPD
+            glassesEntity.amount = glasses.amount
             glassesEntity.comment = (glasses.comment || '').trim()
             const res = await useEntityModel(GlassesEntity).save(glassesEntity)
             return res
@@ -31,10 +36,15 @@ export const createOrSaveGlasses = Api(
             newGlasses.orderID = glasses.orderID.trim()
             newGlasses.phone = glasses.phone.trim()
             newGlasses.indexOfRefraction = glasses.indexOfRefraction
-            newGlasses.brand = (glasses.brand || '').trim()
-            newGlasses.factor = glasses.factor
-            newGlasses.axis = glasses.axis
-            newGlasses.glass = glasses.glass
+            newGlasses.frameBrand = (glasses.frameBrand || '').trim()
+            newGlasses.frameModel = (glasses.frameModel || '').trim()
+            newGlasses.framePrice = glasses.framePrice
+            newGlasses.glassBrand = (glasses.glassBrand || '').trim()
+            newGlasses.glassModel = (glasses.glassModel || '').trim()
+            newGlasses.glassPrice = glasses.glassPrice
+            newGlasses.eyes = glasses.eyes
+            newGlasses.sumPD = glasses.sumPD
+            newGlasses.amount = glasses.amount
             newGlasses.comment = (glasses.comment || '').trim()
             const res = await useEntityModel(GlassesEntity).save(newGlasses)
             return res

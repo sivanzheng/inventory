@@ -9,6 +9,14 @@ import Glasses, { LR, GlassesRow } from '@src/api/models/Glasses'
 import { PageRequest } from '@src/api/models/Page'
 import GlassesForm from './GlassesForm'
 
+const toFixed2 = (value: number) => {
+	if (!value) return 0
+	if (value > 0) {
+		return `+${value.toFixed(2)}`
+	}
+	if (value < 0) return value.toFixed(2)
+}
+
 const toPageQuery = (pageReq: PageRequest) => ({
 	page: pageReq.page.toString(),
 	size: pageReq.size.toString(),
@@ -23,18 +31,18 @@ const formatGlassesList = (glasses: Glasses[]): GlassesRow[] => {
 	const result = []
 	const data = cloneDeep(glasses)
 	for (const row of data) {
-		const glass = row.glass
-		delete row.glass
+		const eyes = row.eyes
+		delete row.eyes
 		result.push({
 			...row,
-			...glass[0],
-			rowKey: `${row.id}-l`
+			...eyes[0],
+			rowKey: `${row.id}-${eyes[0].lr}`
 		})
 
 		result.push({
 			...row,
-			...glass[1],
-			rowKey: `${row.id}-r`
+			...eyes[1],
+			rowKey: `${row.id}-${eyes[1].lr}`
 		})
 	}
 	return result
@@ -128,6 +136,7 @@ export default function Classes() {
 			}
 		})
 		const res = await d.promise
+		console.log(res)
 		Modal.destroyAll()
 		return res
 	}
@@ -202,6 +211,8 @@ export default function Classes() {
 			</Space>
 			<Table
 				bordered
+				size='small'
+				scroll={{ x: 1500 }}
 				pagination={{
 					total,
 					hideOnSinglePage: false,
@@ -215,7 +226,8 @@ export default function Classes() {
 						title: '定配日期',
 						dataIndex: 'orderAt',
 						key: 'orderAt',
-						width: 120,
+						width: 90,
+						fixed: 'left',
 						onCell: mergeRow,
 						render: (value) => moment(Number(value)).format('YYYY-MM-DD')
 					},
@@ -223,67 +235,157 @@ export default function Classes() {
 						title: '姓名',
 						dataIndex: 'name',
 						key: 'name',
+						width: 90,
+						fixed: 'left',
 						onCell: mergeRow
 					},
 					{
 						title: '单号',
 						dataIndex: 'orderID',
 						key: 'orderID',
+						width: 90,
 						onCell: mergeRow
 					},
 					{
 						title: '电话',
 						dataIndex: 'phone',
 						key: 'phone',
+						width: 120,
+						onCell: mergeRow
+					},
+					{
+						title: '镜架品牌',
+						dataIndex: 'frameBrand',
+						key: 'frameBrand',
+						width: 100,
+						onCell: mergeRow
+					},
+					{
+						title: '镜架型号',
+						dataIndex: 'frameModel',
+						key: 'frameModel',
+						width: 120,
+						onCell: mergeRow
+					},
+					{
+						title: '镜片品牌',
+						dataIndex: 'glassBrand',
+						key: 'glassBrand',
+						width: 100,
 						onCell: mergeRow
 					},
 					{
 						title: '折射率',
 						dataIndex: 'indexOfRefraction',
 						key: 'indexOfRefraction',
-						onCell: mergeRow
-					},
-					{
-						title: '品牌',
-						dataIndex: 'brand',
-						key: 'brand',
+						width: 60,
 						onCell: mergeRow
 					},
 					{
 						title: '系数',
-						dataIndex: 'factor',
-						key: 'factor',
+						dataIndex: 'glassModel',
+						key: 'glassModel',
+						width: 150,
 						onCell: mergeRow
 					},
 					{
 						title: '左/右眼',
 						dataIndex: 'lr',
 						key: 'lr',
-						width: 90,
+						width: 80,
 						render: (lr: LR) => LRLabel[lr],
 					},
 					{
 						title: '片数',
 						dataIndex: 'count',
-						key: 'count'
+						key: 'count',
+						width: 50,
 					},
 					{
 						title: '度数',
 						children: [
-							{ title: '球镜S', dataIndex: 'degreeS', key: 'degreeS' },
-							{ title: '球镜C', dataIndex: 'degreeC', key: 'degreeC' },
+							{ 
+								title: '球镜S',
+								dataIndex: 'degreeS',
+								key: 'degreeS',
+								width: 80,
+								render: toFixed2
+							},
+							{
+								title: '球镜C',
+								dataIndex: 'degreeC',
+								key: 'degreeC',
+								width: 80,
+								render: toFixed2
+							},
 						]
 					},
 					{
 						title: '轴距',
 						dataIndex: 'axis',
 						key: 'axis',
+						width: 80,
+					},
+					{
+						title: '镜高',
+						dataIndex: 'glassHeight',
+						key: 'glassHeight',
+						width: 80,
+					},
+					{
+						title: '镜框',
+						dataIndex: 'glassBorder',
+						key: 'glassBorder',
+						width: 80,
+					},
+					{
+						title: '瞳高(PH)',
+						dataIndex: 'ph',
+						key: 'ph',
+						width: 80,
+					},
+					{
+						title: '瞳距(PD)',
+						dataIndex: 'pd',
+						key: 'pd',
+						width: 80,
+					},
+					{
+						title: '瞳距',
+						dataIndex: 'sumPD',
+						key: 'sumPD',
+						width: 80,
 						onCell: mergeRow
+					},
+					{
+						title: '镜架单价',
+						dataIndex: 'framePrice',
+						key: 'framePrice',
+						width: 80,
+						onCell: mergeRow,
+						render: (value) => value ? `¥ ${value}` : ''
+					},
+					{
+						title: '镜片单价',
+						dataIndex: 'glassPrice',
+						key: 'glassPrice',
+						width: 80,
+						onCell: mergeRow,
+						render: (value) => value ? `¥ ${value}` : ''
+					},
+					{
+						title: '金额',
+						dataIndex: 'amount',
+						key: 'amount',
+						width: 80,
+						onCell: mergeRow,
+						render: (value) => value ? `¥ ${value}` : ''
 					},
 					{
 						title: '备注',
 						dataIndex: 'comment',
 						key: 'comment',
+						width: 120,
 						onCell: mergeRow
 					},
 					{
@@ -293,7 +395,7 @@ export default function Classes() {
 						width: 160,
 						onCell: mergeRow,
 						render: (_, row) => (
-							<Button.Group>
+							<Button.Group size='small'>
 								<Button onClick={() => handleEdit(row)}>编辑</Button>
 								<Button onClick={() => handleDelete(row)}>删除</Button>
 							</Button.Group>
