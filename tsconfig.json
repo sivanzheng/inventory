@@ -24,8 +24,7 @@
   },
   "include": [
     "**/*",
-    "dist/host.js",
-    "src/config/config.json"
+    "dist/host.js"
   ],
   "ts-node": {
     "compilerOptions": {

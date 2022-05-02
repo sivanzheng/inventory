@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Q from 'q'
 import moment from 'moment'
-import zhCN from 'antd/lib/locale/zh_CN';
 import { cloneDeep } from 'lodash'
-import { Table, TablePaginationConfig, Button, message, Modal, Space, Form, Input, Divider, DatePicker, ConfigProvider } from 'antd'
-import { ExclamationCircleOutlined, PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons';
+import { Table, TablePaginationConfig, Button, message, Modal, Space, Form, Input, Divider, DatePicker } from 'antd'
+import { ExclamationCircleOutlined, PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons'
 import { getGlassesList, createOrSaveGlasses, deleteGlasses, searchGlasses } from '@src/api/glasses'
 import Glasses, { LR, GlassesRow } from '@src/api/models/Glasses'
 import { PageRequest } from '@src/api/models/Page'
@@ -48,7 +47,6 @@ const mergeRow = (row: GlassesRow, index: number) => {
 
 export default function Classes() {
 	const [form] = Form.useForm()
-	const [locale] = useState(zhCN)
 	const [isSearch, setIsSearch] = useState<boolean>(false)
 	const [page, setPage] = useState<PageRequest>({ page: 1, size: 20 })
 	const [total, setTotal] = useState<number>(0)
@@ -62,7 +60,8 @@ export default function Classes() {
 
 	const handleCreate = async () => {
 		const data = await showFormModal()
-		const res = await createOrSaveGlasses(data)	
+		if (!data) return
+		const res = await createOrSaveGlasses(data)
 		if (res) {
 			message.success('新增成功')
 			getList(page)
@@ -74,7 +73,7 @@ export default function Classes() {
 		if (!data) {
 			message.warn('找不到需要的数据')
 			return
-		} 
+		}
 		const editedData = await showFormModal(data)
 		if (!editedData) return
 		const res = await createOrSaveGlasses(editedData)
@@ -101,7 +100,7 @@ export default function Classes() {
 				}
 				getList(page)
 			}
-		});
+		})
 	}
 
 	const getList = async (p: PageRequest) => {
@@ -122,13 +121,13 @@ export default function Classes() {
 			width: '80%',
 			closable: true,
 			content: <GlassesForm glasses={glasses} onSave={(data: Glasses) => d.resolve(data)} />,
-			okButtonProps: {style: { display: 'none' }},
-			cancelButtonProps: {style: { display: 'none' }},
+			okButtonProps: { style: { display: 'none' } },
+			cancelButtonProps: { style: { display: 'none' } },
 			onCancel: () => {
 				d.resolve(null)
 			}
-		});
-		const res = await d.promise 
+		})
+		const res = await d.promise
 		Modal.destroyAll()
 		return res
 	}
@@ -137,7 +136,7 @@ export default function Classes() {
 		setIsSearch(true)
 		const values = form.getFieldsValue()
 		setLoaging(true)
-	
+
 		let query: any = {
 			page: '1',
 			size: page.size.toString(),
@@ -177,135 +176,133 @@ export default function Classes() {
 
 	return (
 		<div style={{ padding: 10 }}>
-			<ConfigProvider locale={locale}>
-				<Space style={{ marginTop: 10 }}>
-					<Button icon={<PlusOutlined />} onClick={handleCreate}>新增</Button>
-					<Button icon={<RedoOutlined />} onClick={() => getList(page)}>刷新</Button>
-				</Space>
-				<Divider style={{ margin: '10px 0' }} />
-				<Space style={{ marginBottom: 10 }}>
-					<Form form={form} layout='inline'>
-						<Form.Item name='name'>
-							<Input placeholder='输入客户姓名' />
-						</Form.Item>
-						<Form.Item name='phone'>
-							<Input placeholder='输入客户电话号码' />
-						</Form.Item>
-						<Form.Item name='orderID'>
-							<Input placeholder='输入单号' />
-						</Form.Item>
-						<Form.Item name='dateRange'>
-							<DatePicker.RangePicker placeholder={['开始的日期', '结束的日期']} />
-						</Form.Item>
-						<Form.Item>
-							<Button icon={<SearchOutlined />} onClick={handleSearch}>搜索</Button>
-						</Form.Item>
-					</Form>
-				</Space>
-				<Table
-					bordered
-					pagination={{
-						total,
-						hideOnSinglePage: false,
-						showSizeChanger: true,
-						pageSize: page.size,
-					}}
-					rowKey='rowKey'
-					loading={loading}
-					columns={[
-						{
-							title: '定配日期',
-							dataIndex: 'orderAt',
-							key: 'orderAt',
-							width: 120,
-							onCell: mergeRow,
-							render: (value) => moment(Number(value)).format('YYYY-MM-DD')
-						},
-						{
-							title: '姓名',
-							dataIndex: 'name',
-							key: 'name',
-							onCell: mergeRow
-						},
-						{
-							title: '单号',
-							dataIndex: 'orderID',
-							key: 'orderID',
-							onCell: mergeRow
-						},
-						{
-							title: '电话',
-							dataIndex: 'phone',
-							key: 'phone',
-							onCell: mergeRow
-						},
-						{
-							title: '折射率',
-							dataIndex: 'indexOfRefraction',
-							key: 'indexOfRefraction',
-							onCell: mergeRow
-						},
-						{
-							title: '品牌',
-							dataIndex: 'brand',
-							key: 'brand',
-							onCell: mergeRow
-						},
-						{
-							title: '系数',
-							dataIndex: 'factor',
-							key: 'factor',
-							onCell: mergeRow
-						},
-						{
-							title: '左/右眼',
-							dataIndex: 'lr',
-							key: 'lr',
-							width: 90,
-							render: (lr: LR) => LRLabel[lr],
-						},
-						{
-							title: '片数',
-							dataIndex: 'count',
-							key: 'count'
-						},
-						{
-							title: '度数',
-							children: [
-								{ title: '球镜S', dataIndex: 'degreeS', key: 'degreeS' },
-								{ title: '球镜C', dataIndex: 'degreeC', key: 'degreeC' },
-							]
-						},
-						{
-							title: '轴距',
-							dataIndex: 'axis',
-							key: 'axis',
-							onCell: mergeRow
-						},
-						{
-							title: '备注',
-							dataIndex: 'comment',
-							key: 'comment',
-							onCell: mergeRow
-						},
-						{
-							title: '操作',
-							key: 'option',
-							fixed: 'right',
-							width: 160,
-							onCell: mergeRow,
-							render: (_, row) => (
-								<Button.Group>
-									<Button onClick={() => handleEdit(row)}>编辑</Button>
-									<Button onClick={() => handleDelete(row)}>删除</Button>
-								</Button.Group>
-							),
-						}
-					]}
-					dataSource={dataSource}
-					onChange={handleChange}
-				/>
-			</ConfigProvider>
+			<Space style={{ marginTop: 10 }}>
+				<Button icon={<PlusOutlined />} onClick={handleCreate}>新增</Button>
+				<Button icon={<RedoOutlined />} onClick={() => getList(page)}>刷新</Button>
+			</Space>
+			<Divider style={{ margin: '10px 0' }} />
+			<Space style={{ marginBottom: 10 }}>
+				<Form form={form} layout='inline'>
+					<Form.Item name='name'>
+						<Input placeholder='输入客户姓名' />
+					</Form.Item>
+					<Form.Item name='phone'>
+						<Input placeholder='输入客户电话号码' />
+					</Form.Item>
+					<Form.Item name='orderID'>
+						<Input placeholder='输入单号' />
+					</Form.Item>
+					<Form.Item name='dateRange'>
+						<DatePicker.RangePicker placeholder={['开始的日期', '结束的日期']} />
+					</Form.Item>
+					<Form.Item>
+						<Button icon={<SearchOutlined />} onClick={handleSearch}>搜索</Button>
+					</Form.Item>
+				</Form>
+			</Space>
+			<Table
+				bordered
+				pagination={{
+					total,
+					hideOnSinglePage: false,
+					showSizeChanger: true,
+					pageSize: page.size,
+				}}
+				rowKey='rowKey'
+				loading={loading}
+				columns={[
+					{
+						title: '定配日期',
+						dataIndex: 'orderAt',
+						key: 'orderAt',
+						width: 120,
+						onCell: mergeRow,
+						render: (value) => moment(Number(value)).format('YYYY-MM-DD')
+					},
+					{
+						title: '姓名',
+						dataIndex: 'name',
+						key: 'name',
+						onCell: mergeRow
+					},
+					{
+						title: '单号',
+						dataIndex: 'orderID',
+						key: 'orderID',
+						onCell: mergeRow
+					},
+					{
+						title: '电话',
+						dataIndex: 'phone',
+						key: 'phone',
+						onCell: mergeRow
+					},
+					{
+						title: '折射率',
+						dataIndex: 'indexOfRefraction',
+						key: 'indexOfRefraction',
+						onCell: mergeRow
+					},
+					{
+						title: '品牌',
+						dataIndex: 'brand',
+						key: 'brand',
+						onCell: mergeRow
+					},
+					{
+						title: '系数',
+						dataIndex: 'factor',
+						key: 'factor',
+						onCell: mergeRow
+					},
+					{
+						title: '左/右眼',
+						dataIndex: 'lr',
+						key: 'lr',
+						width: 90,
+						render: (lr: LR) => LRLabel[lr],
+					},
+					{
+						title: '片数',
+						dataIndex: 'count',
+						key: 'count'
+					},
+					{
+						title: '度数',
+						children: [
+							{ title: '球镜S', dataIndex: 'degreeS', key: 'degreeS' },
+							{ title: '球镜C', dataIndex: 'degreeC', key: 'degreeC' },
+						]
+					},
+					{
+						title: '轴距',
+						dataIndex: 'axis',
+						key: 'axis',
+						onCell: mergeRow
+					},
+					{
+						title: '备注',
+						dataIndex: 'comment',
+						key: 'comment',
+						onCell: mergeRow
+					},
+					{
+						title: '操作',
+						key: 'option',
+						fixed: 'right',
+						width: 160,
+						onCell: mergeRow,
+						render: (_, row) => (
+							<Button.Group>
+								<Button onClick={() => handleEdit(row)}>编辑</Button>
+								<Button onClick={() => handleDelete(row)}>删除</Button>
+							</Button.Group>
+						),
+					}
+				]}
+				dataSource={dataSource}
+				onChange={handleChange}
+			/>
 		</div>
 	)
 }

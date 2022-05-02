@@ -1,6 +1,6 @@
 import { Api, Get, Post, Delete, Params, Query, useContext } from '@midwayjs/hooks'
 import type { Context } from '@midwayjs/koa'
-import { useEntityModel } from '@midwayjs/orm';
+import { useEntityModel } from '@midwayjs/orm'
 import { Like, FindOptionsWhere, Between } from 'typeorm'
 import Glasses from '@src/api/models/Glasses'
 import { Glasses as GlassesEntity } from './entity/glasses'
@@ -17,11 +17,11 @@ export const createOrSaveGlasses = Api(
             glassesEntity.orderID = glasses.orderID.trim()
             glassesEntity.phone = glasses.phone.trim()
             glassesEntity.indexOfRefraction = glasses.indexOfRefraction
-            glassesEntity.brand = glasses.brand.trim()
+            glassesEntity.brand = (glasses.brand || '').trim()
             glassesEntity.factor = glasses.factor
             glassesEntity.axis = glasses.axis
             glassesEntity.glass = glasses.glass
-            glassesEntity.comment = glasses.comment.trim()
+            glassesEntity.comment = (glasses.comment || '').trim()
             const res = await useEntityModel(GlassesEntity).save(glassesEntity)
             return res
         } else {
@@ -31,11 +31,11 @@ export const createOrSaveGlasses = Api(
             newGlasses.orderID = glasses.orderID.trim()
             newGlasses.phone = glasses.phone.trim()
             newGlasses.indexOfRefraction = glasses.indexOfRefraction
-            newGlasses.brand = glasses.brand.trim()
+            newGlasses.brand = (glasses.brand || '').trim()
             newGlasses.factor = glasses.factor
             newGlasses.axis = glasses.axis
             newGlasses.glass = glasses.glass
-            newGlasses.comment = glasses.comment.trim()
+            newGlasses.comment = (glasses.comment || '').trim()
             const res = await useEntityModel(GlassesEntity).save(newGlasses)
             return res
         }
