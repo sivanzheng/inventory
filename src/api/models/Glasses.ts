@@ -34,6 +34,6 @@ export default interface Glasses {
 	comment: string
 }
 
-export interface GlassesRow extends Omit<Glasses, 'eye'>, Eye {
+export interface GlassesRow extends Omit<Glasses, 'eyes'>, Eye {
 	rowKey: string
 }
