@@ -164,7 +164,7 @@ import * as orm from '@midwayjs/orm'
 imports: [Koa, orm, hooks()]
 // ...
 ```
-
+`glasses` 表结构
 ```MySQL
 CREATE TABLE `glasses` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
