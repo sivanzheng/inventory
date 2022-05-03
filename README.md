@@ -183,6 +183,7 @@ $ npx mdl-gen-midway -h localhost -p 3306 -d yourdbname -u root -x yourpassword 
 具体参考 [TypeORM](https://typeorm.io/) 教程
 
 ## DevOps
+
 - 编写 [Dockerfile](./Dockerfile)
 - `$ docker build -t shiverzheng/inventory:v1.0.0 .`
 - `$ docker login`
@@ -190,5 +191,9 @@ $ npx mdl-gen-midway -h localhost -p 3306 -d yourdbname -u root -x yourpassword 
 - `$ cd ~/.ssh && ssh -i ***.pem root@***.**.**.**`
 - `$ docker pull`
 - `$ docker run -d -p 80:3000 shiverzheng/inventory:v1.0.0`
+
+> 如果在构建镜像阶段执行 `hooks build`，在启动镜像的时候，服务会直接 0 退出
+> 
+> 所以将 `hooks build && hooks start` 一并写入镜像启动命令
 
 TODO: Github Actions CI/CD 
