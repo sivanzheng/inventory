@@ -184,6 +184,8 @@ $ npx mdl-gen-midway -h localhost -p 3306 -d yourdbname -u root -x yourpassword 
 
 ## DevOps
 
+### 流程
+
 - 编写 [Dockerfile](./Dockerfile)
 - `$ docker build -t shiverzheng/inventory:v1.0.0 .`
 - `$ docker login`
@@ -192,8 +194,15 @@ $ npx mdl-gen-midway -h localhost -p 3306 -d yourdbname -u root -x yourpassword 
 - `$ docker pull`
 - `$ docker run -d -p 80:3000 shiverzheng/inventory:v1.0.0`
 
-> 如果在构建镜像阶段执行 `hooks build`，在启动镜像的时候，服务会直接 0 退出
-> 
-> 所以将 `hooks build && hooks start` 一并写入镜像启动命令
+### 调试
 
-TODO: Github Actions CI/CD 
+如果在构建镜像阶段执行 `hooks build`，在启动镜像的时候，服务会直接 0 退出，使用如下命令可以让服务宕住，以便进入容器内部进行调试
+
+``` shell
+$ docker run -d <image_name> tail -f /dev/null
+```
+将 `hooks build && hooks start` 一并写入镜像启动命令可以解决 0 退出问题
+
+### TODO
+
+Github Actions CI/CD 
