@@ -25,14 +25,12 @@ export default function GlassesForm(props: Props) {
 	const handleSave = () => {
 		form.validateFields()
 			.then((values) => {
-				console.log(values)
 				const data = {
 					...values,
 					id: props.glasses && props.glasses.id ? props.glasses.id : null,
 					eyes: values.eyes.map((v: Eye, index: number) => ({ ...v, lr: index === 0 ? LR.L : LR.R })),
 					orderAt: moment(values.orderAt).valueOf()
 				}
-				console.log(data)
 				props.onSave(data)
 			})
 	}

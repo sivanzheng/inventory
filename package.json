@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "hooks start",
+    "start": "hooks build && hooks start",
     "dev": "hooks dev",
     "build": "hooks build"
   },
@@ -14,7 +14,7 @@
     "@midwayjs/orm": "^3.3.5",
     "@midwayjs/rpc": "^3.0.0",
     "ahooks": "^3.1.2",
-    "antd": "^4.20.2",
+    "antd": "4.20.2",
     "dotenv": "^16.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "lodash": "^4.17.21",

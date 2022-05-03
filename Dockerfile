@@ -4,9 +4,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install
+ENV TZ="Asia/Shanghai"
 
-RUN npm run build
+RUN npm install --loglevel verbose --registry=https://registry.npm.taobao.org/
 
 EXPOSE 3000
 

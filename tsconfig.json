@@ -23,7 +23,7 @@
     }
   },
   "include": [
-    "**/*",
+    "./src",
     "dist/host.js"
   ],
   "ts-node": {

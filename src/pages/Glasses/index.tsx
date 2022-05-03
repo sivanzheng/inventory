@@ -136,7 +136,6 @@ export default function Classes() {
 			}
 		})
 		const res = await d.promise
-		console.log(res)
 		Modal.destroyAll()
 		return res
 	}
