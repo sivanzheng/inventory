@@ -166,19 +166,21 @@ imports: [Koa, orm, hooks()]
 ```
 `glasses` 表结构
 ```MySQL
-CREATE TABLE `glasses` (
+SELECT * FROM inventory.glasses;CREATE TABLE `glasses` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `order_at` bigint NOT NULL,
   `name` varchar(45) NOT NULL,
   `order_id` varchar(45) NOT NULL,
   `phone` varchar(45) NOT NULL,
-  `index_of_refraction` float DEFAULT NULL,
   `frame_brand` varchar(45) DEFAULT NULL,
   `frame_model` varchar(45) DEFAULT NULL,
   `frame_price` float DEFAULT NULL,
+  `frame_height` varchar(45) DEFAULT NULL,
+  `frame_size` varchar(45) DEFAULT NULL,
   `glass_brand` varchar(45) DEFAULT NULL,
   `glass_model` varchar(45) DEFAULT NULL,
   `glass_price` float DEFAULT NULL,
+  `index_of_refraction` float DEFAULT NULL,
   `eyes` json DEFAULT NULL,
   `sum_pd` float DEFAULT NULL,
   `amount` float DEFAULT NULL,
@@ -188,8 +190,8 @@ CREATE TABLE `glasses` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
-SELECT * FROM inventory.glasses;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+
 ```
 
 #### 自动生成 Entity
