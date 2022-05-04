@@ -3,7 +3,7 @@ import type { Context } from '@midwayjs/koa'
 import { useEntityModel } from '@midwayjs/orm'
 import { Like, FindOptionsWhere, Between } from 'typeorm'
 import Glasses from '@src/api/models/Glasses'
-import { Glasses as GlassesEntity } from './entity/Glasses'
+import { Glasses as GlassesEntity } from './entity/GlassesEntity'
 
 export const createOrSaveGlasses = Api(
     Post('/glasses'),
@@ -16,13 +16,15 @@ export const createOrSaveGlasses = Api(
             glassesEntity.name = glasses.name.trim()
             glassesEntity.orderID = glasses.orderID.trim()
             glassesEntity.phone = glasses.phone.trim()
-            glassesEntity.indexOfRefraction = glasses.indexOfRefraction
             glassesEntity.frameBrand = (glasses.frameBrand || '').trim()
             glassesEntity.frameModel = (glasses.frameModel || '').trim()
             glassesEntity.framePrice = glasses.framePrice
+            glassesEntity.frameHeight = (glasses.frameHeight || '').trim()
+            glassesEntity.frameSize = (glasses.frameSize || '').trim()
             glassesEntity.glassBrand = (glasses.glassBrand || '').trim()
             glassesEntity.glassModel = (glasses.glassModel || '').trim()
             glassesEntity.glassPrice = glasses.glassPrice
+            glassesEntity.indexOfRefraction = glasses.indexOfRefraction
             glassesEntity.eyes = glasses.eyes
             glassesEntity.sumPD = glasses.sumPD
             glassesEntity.amount = glasses.amount
@@ -35,13 +37,15 @@ export const createOrSaveGlasses = Api(
             newGlasses.name = glasses.name.trim()
             newGlasses.orderID = glasses.orderID.trim()
             newGlasses.phone = glasses.phone.trim()
-            newGlasses.indexOfRefraction = glasses.indexOfRefraction
             newGlasses.frameBrand = (glasses.frameBrand || '').trim()
             newGlasses.frameModel = (glasses.frameModel || '').trim()
             newGlasses.framePrice = glasses.framePrice
+            newGlasses.frameHeight = (glasses.frameHeight || '').trim()
+            newGlasses.frameSize = (glasses.frameSize || '').trim()
             newGlasses.glassBrand = (glasses.glassBrand || '').trim()
             newGlasses.glassModel = (glasses.glassModel || '').trim()
             newGlasses.glassPrice = glasses.glassPrice
+            newGlasses.indexOfRefraction = glasses.indexOfRefraction
             newGlasses.eyes = glasses.eyes
             newGlasses.sumPD = glasses.sumPD
             newGlasses.amount = glasses.amount

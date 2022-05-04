@@ -33,17 +33,34 @@ const formatGlassesList = (glasses: Glasses[]): GlassesRow[] => {
 	for (const row of data) {
 		const eyes = row.eyes
 		delete row.eyes
-		result.push({
-			...row,
-			...eyes[0],
-			rowKey: `${row.id}-${eyes[0].lr}`
-		})
-
-		result.push({
-			...row,
-			...eyes[1],
-			rowKey: `${row.id}-${eyes[1].lr}`
-		})
+		
+		const rightEye = eyes.find(v => v.lr === LR.R)
+		if (rightEye) {
+			result.push({
+				...row,
+				...rightEye,
+				rowKey: `${row.id}-${LR.R}`
+			})
+		} else {
+			result.push({
+				...row,
+				rowKey: `${row.id}-${LR.R}`
+			})
+		}
+		
+		const leftEye = eyes.find(v => v.lr === LR.L)
+		if (leftEye) {
+			result.push({
+				...row,
+				...leftEye,
+				rowKey: `${row.id}-${LR.L}`
+			})
+		} else {
+			result.push({
+				...row,
+				rowKey: `${row.id}-${LR.L}`
+			})
+		}
 	}
 	return result
 }
@@ -267,6 +284,20 @@ export default function Classes() {
 						onCell: mergeRow
 					},
 					{
+						title: '镜框高度',
+						dataIndex: 'frameHeight',
+						key: 'frameHeight',
+						width: 80,
+						onCell: mergeRow
+					},
+					{
+						title: '镜框尺寸',
+						dataIndex: 'frameSize',
+						key: 'frameSize',
+						width: 80,
+						onCell: mergeRow
+					},
+					{
 						title: '镜片品牌',
 						dataIndex: 'glassBrand',
 						key: 'glassBrand',
@@ -288,72 +319,60 @@ export default function Classes() {
 						onCell: mergeRow
 					},
 					{
-						title: '左/右眼',
+						title: 'L/R',
 						dataIndex: 'lr',
 						key: 'lr',
-						width: 80,
+						width: 40,
 						render: (lr: LR) => LRLabel[lr],
 					},
 					{
 						title: '片数',
-						dataIndex: 'count',
-						key: 'count',
+						dataIndex: 'glassCount',
+						key: 'glassCount',
 						width: 50,
 					},
 					{
 						title: '度数',
 						children: [
 							{ 
-								title: '球镜S',
+								title: '球镜',
 								dataIndex: 'degreeS',
 								key: 'degreeS',
 								width: 80,
 								render: toFixed2
 							},
 							{
-								title: '球镜C',
+								title: '柱镜',
 								dataIndex: 'degreeC',
 								key: 'degreeC',
 								width: 80,
 								render: toFixed2
 							},
+							{
+								title: '轴向',
+								dataIndex: 'axial',
+								key: 'axial',
+								width: 80,
+							},
 						]
-					},
-					{
-						title: '轴距',
-						dataIndex: 'axis',
-						key: 'axis',
-						width: 80,
-					},
-					{
-						title: '镜高',
-						dataIndex: 'glassHeight',
-						key: 'glassHeight',
-						width: 80,
-					},
-					{
-						title: '镜框',
-						dataIndex: 'glassBorder',
-						key: 'glassBorder',
-						width: 80,
 					},
 					{
 						title: '瞳高(PH)',
 						dataIndex: 'ph',
 						key: 'ph',
-						width: 80,
+						width: 50,
 					},
 					{
 						title: '瞳距(PD)',
 						dataIndex: 'pd',
 						key: 'pd',
-						width: 80,
+						width: 50,
 					},
 					{
-						title: '瞳距',
+						title: '远用瞳距',
 						dataIndex: 'sumPD',
 						key: 'sumPD',
-						width: 80,
+						width: 50,
 						onCell: mergeRow
 					},
 					{
@@ -391,7 +410,7 @@ export default function Classes() {
 						title: '操作',
 						key: 'option',
 						fixed: 'right',
-						width: 160,
+						width: 115,
 						onCell: mergeRow,
 						render: (_, row) => (
 							<Button.Group size='small'>

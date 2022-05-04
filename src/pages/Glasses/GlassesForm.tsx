@@ -101,6 +101,20 @@ export default function GlassesForm(props: Props) {
 				<Input style={{ width: 180 }} />
 			</Item>
 			<Item
+				label='镜框高度'
+				name='frameHeight'
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 180 }} />
+			</Item>
+			<Item
+				label='镜框尺寸'
+				name='frameSize'
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 180 }} />
+			</Item>
+			<Item
 				label='镜片品牌'
 				name='glassBrand'
 				style={{ marginBottom: 10 }}
@@ -121,137 +135,102 @@ export default function GlassesForm(props: Props) {
 			>
 				<Input style={{ width: 180 }} />
 			</Item>
-			<Divider style={{ marginTop: 0, marginBottom: 10 }}/>
-			<Item hidden label='左眼' name={['eyes', 0, 'lr']} >
-				<InputNumber value={LR.L} />
-			</Item>
 			<Item
-				label='左眼片数'
-				name={['eyes', 0, 'count']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左眼球镜S'
-				name={['eyes', 0, 'degreeS']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左眼球镜C'
-				name={['eyes', 0, 'degreeC']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左眼轴距'
-				name={['eyes', 0, 'axis']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左瞳距(LPD)'
-				name={['eyes', 0, 'pd']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左瞳高(LPH)'
-				name={['eyes', 0, 'ph']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左眼镜高'
-				name={['eyes', 0, 'glassHeight']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
-			<Item
-				label='左眼镜框'
-				name={['eyes', 0, 'glassBorder']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
-			</Item>
+					label='远用瞳距'
+					name='sumPD'
+					style={{ marginBottom: 10 }}
+				>
+					<InputNumber style={{ width: 180 }} />
+				</Item>
 			<Divider style={{ marginTop: 0, marginBottom: 10 }}/>
 			<Item hidden label='右眼' name={['eyes', 1, 'lr']} >
 				<InputNumber value={LR.L} />
 			</Item>
-			<Item
-				label='右眼片数'
-				name={['eyes', 1, 'count']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 180 }} />
+			<Item hidden label='左眼' name={['eyes', 0, 'lr']} >
+				<InputNumber value={LR.L} />
 			</Item>
 			<Item
-				label='右眼球镜S'
+				label='右眼球镜'
 				name={['eyes', 1, 'degreeS']}
 				style={{ marginBottom: 10 }}
 			>
 				<InputNumber style={{ width: 180 }} />
 			</Item>
 			<Item
-				label='右眼球镜C'
+				label='左眼球镜'
+				name={['eyes', 0, 'degreeS']}
+				style={{ marginBottom: 10 }}
+			>
+				<InputNumber style={{ width: 180 }} />
+			</Item>
+			<Item
+				label='右眼柱镜'
 				name={['eyes', 1, 'degreeC']}
 				style={{ marginBottom: 10 }}
 			>
 				<InputNumber style={{ width: 180 }} />
 			</Item>
 			<Item
-				label='右眼轴距'
-				name={['eyes', 1, 'axis']}
+				label='左眼柱镜'
+				name={['eyes', 0, 'degreeC']}
 				style={{ marginBottom: 10 }}
 			>
 				<InputNumber style={{ width: 180 }} />
 			</Item>
 			<Item
-				label='右瞳距(RPD)'
-				name={['eyes', 1, 'pd']}
+				label='右眼轴向'
+				name={['eyes', 1, 'axial']}
 				style={{ marginBottom: 10 }}
 			>
-				<InputNumber style={{ width: 180 }} />
+				<Input style={{ width: 180 }} />
+			</Item>
+			<Item
+				label='左眼轴向'
+				name={['eyes', 0, 'axial']}
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 180 }} />
 			</Item>
 			<Item
 				label='右瞳高(RPH)'
 				name={['eyes', 1, 'ph']}
 				style={{ marginBottom: 10 }}
 			>
-				<InputNumber style={{ width: 180 }} />
+				<Input style={{ width: 180 }} />
 			</Item>
 			<Item
-				label='右眼镜高'
-				name={['eyes', 1, 'glassHeight']}
+				label='左瞳高(LPH)'
+				name={['eyes', 0, 'ph']}
 				style={{ marginBottom: 10 }}
 			>
-				<InputNumber style={{ width: 180 }} />
+				<Input style={{ width: 180 }} />
 			</Item>
 			<Item
-				label='右眼镜框'
-				name={['eyes', 1, 'glassBorder']}
+				label='右瞳距(RPD)'
+				name={['eyes', 1, 'pd']}
 				style={{ marginBottom: 10 }}
 			>
-				<InputNumber style={{ width: 180 }} />
+				<Input style={{ width: 180 }} />
 			</Item>
+			<Item
+				label='左瞳距(LPD)'
+				name={['eyes', 0, 'pd']}
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 180 }} />
+			</Item>
+
 			<Divider style={{ marginTop: 0, marginBottom: 10 }}/>
 				<Item
-					label='瞳距'
-					name='sumPD'
+					label='左眼片数'
+					name={['eyes', 0, 'glassCount']}
 					style={{ marginBottom: 10 }}
 				>
 					<InputNumber style={{ width: 180 }} />
 				</Item>
 				<Item
-					label='镜架单价'
-					name='framePrice'
+					label='右眼片数'
+					name={['eyes', 1, 'glassCount']}
 					style={{ marginBottom: 10 }}
 				>
 					<InputNumber style={{ width: 180 }} />
@@ -259,6 +238,13 @@ export default function GlassesForm(props: Props) {
 				<Item
 					label='镜片单价'
 					name='glassPrice'
+					style={{ marginBottom: 10 }}
+				>
+					<InputNumber style={{ width: 180 }} />
+				</Item>
+				<Item
+					label='镜架单价'
+					name='framePrice'
 					style={{ marginBottom: 10 }}
 				>
 					<InputNumber style={{ width: 180 }} />
