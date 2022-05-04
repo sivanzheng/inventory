@@ -33,20 +33,7 @@ const formatGlassesList = (glasses: Glasses[]): GlassesRow[] => {
 	for (const row of data) {
 		const eyes = row.eyes
 		delete row.eyes
-		const leftEye = eyes.find(v => v.lr === LR.L)
-		if (leftEye) {
-			result.push({
-				...row,
-				...leftEye,
-				rowKey: `${row.id}-${LR.L}`
-			})
-		} else {
-			result.push({
-				...row,
-				rowKey: `${row.id}-${LR.L}`
-			})
-		}
-
+		
 		const rightEye = eyes.find(v => v.lr === LR.R)
 		if (rightEye) {
 			result.push({
@@ -58,6 +45,20 @@ const formatGlassesList = (glasses: Glasses[]): GlassesRow[] => {
 			result.push({
 				...row,
 				rowKey: `${row.id}-${LR.R}`
+			})
+		}
+		
+		const leftEye = eyes.find(v => v.lr === LR.L)
+		if (leftEye) {
+			result.push({
+				...row,
+				...leftEye,
+				rowKey: `${row.id}-${LR.L}`
+			})
+		} else {
+			result.push({
+				...row,
+				rowKey: `${row.id}-${LR.L}`
 			})
 		}
 	}
@@ -318,10 +319,10 @@ export default function Classes() {
 						onCell: mergeRow
 					},
 					{
-						title: '左/右眼',
+						title: 'L/R',
 						dataIndex: 'lr',
 						key: 'lr',
-						width: 80,
+						width: 40,
 						render: (lr: LR) => LRLabel[lr],
 					},
 					{
@@ -359,19 +360,19 @@ export default function Classes() {
 						title: '瞳高(PH)',
 						dataIndex: 'ph',
 						key: 'ph',
-						width: 80,
+						width: 50,
 					},
 					{
 						title: '瞳距(PD)',
 						dataIndex: 'pd',
 						key: 'pd',
-						width: 80,
+						width: 50,
 					},
 					{
 						title: '远用瞳距',
 						dataIndex: 'sumPD',
 						key: 'sumPD',
-						width: 80,
+						width: 50,
 						onCell: mergeRow
 					},
 					{
@@ -409,7 +410,7 @@ export default function Classes() {
 						title: '操作',
 						key: 'option',
 						fixed: 'right',
-						width: 160,
+						width: 115,
 						onCell: mergeRow,
 						render: (_, row) => (
 							<Button.Group size='small'>
