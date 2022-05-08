@@ -3,7 +3,7 @@ import type { Context } from '@midwayjs/koa'
 import { useEntityModel } from '@midwayjs/orm'
 import { Like, FindOptionsWhere, Between } from 'typeorm'
 import Glasses from '@src/api/models/Glasses'
-import { Glasses as GlassesEntity } from './entity/GlassesEntity'
+import { Glasses as GlassesEntity } from '@src/api/entity/GlassesEntity'
 
 export const createOrSaveGlasses = Api(
     Post('/glasses'),
