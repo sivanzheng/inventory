@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { getJWT } from '@src/api/controller/jwt'
+import { login } from '@src/api/controller/login'
 
+// TODO: https://midwayjs.org/docs/hooks/client
 export default function Login() {
 	const signIn = async () => {
-		const res = await getJWT()
+		const res = await login({ account: 'admin', password: '' })
 		console.log(res)
 	}
 	signIn()
