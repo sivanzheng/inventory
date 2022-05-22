@@ -5,10 +5,13 @@ import moment from 'moment'
 import zhCN from 'antd/lib/locale/zh_CN'
 import 'antd/dist/antd.css'
 import 'moment/dist/locale/zh-cn'
-import Header from './components/Header'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { initHttpClinet } from './httpClient'
 import Classes from './pages/Glasses'
+import Login from './pages/Login'
 import './index.css'
 
+initHttpClinet()
 moment.locale('zh-cn')
 
 const { Content } = Layout
@@ -18,12 +21,22 @@ function App() {
     return (
         <div className="app">
             <ConfigProvider locale={locale}>
-                <Layout>
-                    <Header />
-                    <Content>
-                        <Classes />
-                    </Content>
-                </Layout>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/login' element={<Login />} />
+                        <Route
+                            path='/glasses'
+                            element={
+                                <Layout>
+                                    <Content>
+                                        <Classes />
+                                    </Content>
+                                </Layout>
+                            }
+                        />
+                    </Routes>
+
+                </BrowserRouter>
             </ConfigProvider>
         </div>
     )

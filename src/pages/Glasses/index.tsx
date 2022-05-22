@@ -4,7 +4,7 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash'
 import { Table, TablePaginationConfig, Button, message, Modal, Space, Form, Input, Divider, DatePicker } from 'antd'
 import { ExclamationCircleOutlined, PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons'
-import { getGlassesList, createOrSaveGlasses, deleteGlasses, searchGlasses } from '@src/api/glasses'
+import { getGlassesList, createOrSaveGlasses, deleteGlasses, searchGlasses } from '@src/api/controller/glasses'
 import Glasses, { LR, GlassesRow } from '@src/api/models/Glasses'
 import { PageRequest } from '@src/api/models/Page'
 import GlassesForm from './GlassesForm'
@@ -132,6 +132,7 @@ export default function Classes() {
 		setLoaging(true)
 		const res = await getGlassesList({ query: toPageQuery(p) })
 		setLoaging(false)
+		if (!res) return
 		const { data, total } = res
 		setTotal(total)
 		setGlasses(data)
@@ -182,6 +183,7 @@ export default function Classes() {
 		const res = await searchGlasses({ query })
 		setLoaging(false)
 
+		if (!res) return
 		const { data, total } = res
 		setTotal(total)
 		setGlasses(data)

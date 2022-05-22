@@ -1,12 +1,12 @@
 import { Api, Get, Post, Delete, Params, Query, useContext } from '@midwayjs/hooks'
-import type { Context } from '@midwayjs/koa'
+import { Context } from '@midwayjs/koa'
 import { useEntityModel } from '@midwayjs/orm'
 import { Like, FindOptionsWhere, Between } from 'typeorm'
 import Glasses from '@src/api/models/Glasses'
-import { Glasses as GlassesEntity } from './entity/GlassesEntity'
+import { Glasses as GlassesEntity } from '@src/api/entity/GlassesEntity'
 
 export const createOrSaveGlasses = Api(
-    Post('/glasses'),
+    Post('/api/glasses'),
     async (glasses: Glasses) => {
         if (glasses.id) {
             const glassesEntity = await useEntityModel(GlassesEntity)
@@ -57,7 +57,7 @@ export const createOrSaveGlasses = Api(
 )
 
 export const deleteGlasses = Api(
-    Delete('/glasses/:id'),
+    Delete('/api/glasses/:id'),
     Params<{ id: string }>(),
     async () => {
         const ctx = useContext()
@@ -73,7 +73,7 @@ export const deleteGlasses = Api(
 )
 
 export const getGlassesList = Api(
-    Get('/glasses'),
+    Get('/api/glasses'),
     Query<{ page: string; size: string }>(),
     async () => {
         const ctx = useContext<Context>()
@@ -94,7 +94,7 @@ export const getGlassesList = Api(
 )
 
 export const searchGlasses = Api(
-    Get('/glasses/search'),
+    Get('/api/glasses/search'),
     Query<{
         page: string;
         size: string;
