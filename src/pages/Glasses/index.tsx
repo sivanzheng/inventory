@@ -306,13 +306,13 @@ export default function Classes() {
 						width: 100,
 						onCell: mergeRow
 					},
-					{
-						title: '折射率',
-						dataIndex: 'indexOfRefraction',
-						key: 'indexOfRefraction',
-						width: 60,
-						onCell: mergeRow
-					},
+					// {
+					// 	title: '折射率',
+					// 	dataIndex: 'indexOfRefraction',
+					// 	key: 'indexOfRefraction',
+					// 	width: 60,
+					// 	onCell: mergeRow
+					// },
 					{
 						title: '系数',
 						dataIndex: 'glassModel',
@@ -327,12 +327,12 @@ export default function Classes() {
 						width: 40,
 						render: (lr: LR) => LRLabel[lr],
 					},
-					{
-						title: '片数',
-						dataIndex: 'glassCount',
-						key: 'glassCount',
-						width: 50,
-					},
+					// {
+					// 	title: '片数',
+					// 	dataIndex: 'glassCount',
+					// 	key: 'glassCount',
+					// 	width: 50,
+					// },
 					{
 						title: '度数',
 						children: [
