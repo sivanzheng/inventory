@@ -20,36 +20,49 @@ npx degit https://github.com/midwayjs/hooks/examples/react ./inventory
 
 ## 目录结构
 
-``` tree
+```
 ├── .dockerignore
-├── .env                        // RDS密钥
-├── .gitignore
+├── .env                            // RDS密钥 JWT配置
 ├── Dockerfile
 ├── LICENSE
 ├── README.md
 ├── index.html
-├── midway.config.ts            // Midway构建配置，使用vite进行构建
+├── midway.config.ts                // Midway构建配置，使用vite进行构建
+├── output                          // 自动生成的Entity
+│   └── Glasses.ts
 ├── package-lock.json
 ├── package.json
 ├── src
-│   ├── api
-│   │   ├── configuration.ts    // Midway服务器配置
-│   │   ├── entity
-│   │   │   └── glasses.ts      // 数据实体
-│   │   ├── glasses.ts
-│   │   └── models              // 客户端与服务端通用的类型定义
-│   │       ├── Glasses.ts
-│   │       └── Page.ts
-│   ├── components              // 客户端组件
-│   │   └── Header
-│   │       ├── index.css
-│   │       └── index.tsx
-│   ├── index.css
-│   ├── index.tsx               // 客户端入口文件
-│   └── pages                   // 客户端页面
-│       └── Glasses
-│           ├── GlassesForm.tsx
-│           └── index.tsx
+│   ├── api
+│   │   ├── configuration.ts        // Midway服务器配置
+│   │   ├── controller
+│   │   │   ├── glasses.ts
+│   │   │   └── login.ts
+│   │   ├── entity                  // 数据实体
+│   │   │   ├── GlassesEntity.ts
+│   │   │   └── UsersEntity.ts
+│   │   ├── middleware              // 中间件
+│   │   │   └── jwt.middleware.ts
+│   │   └── models                  // 客户端与服务端通用的类型定义
+│   │       ├── Glasses.ts
+│   │       ├── Page.ts
+│   │       ├── Response.ts
+│   │       └── User.ts
+│   ├── components                  // 客户端组件
+│   │   └── Header
+│   │       ├── index.css
+│   │       └── index.tsx
+│   ├── httpClient
+│   │   └── index.ts                // 客户端入口文件
+│   ├── index.css
+│   ├── index.tsx
+│   └── pages                       // 客户端页面
+│       ├── Glasses
+│       │   ├── GlassesForm.tsx
+│       │   └── index.tsx
+│       └── Login
+│           ├── index.css
+│           └── index.tsx
 └── tsconfig.json
 ```
 
@@ -149,6 +162,17 @@ const res = await getGlassesList({
 })
 ```
 
+### 授权登录
+#### JWT
+- 实现 [Login Controller](src/api/controller/login.ts)
+  > 对账号密码进行校验之后，签发 `token`
+- 实现登录逻辑 [Login.tsx](src/pages/Login/index.tsx)
+  > 拿到签发的 `token` 后，写入 `localStorage`
+- 配置请求客户端 [httpClient](src/httpClient/index.ts)
+  > 实现请求中间件，将 `token` 写入请求头的 `Authorization` 
+- 在服务端实现校验中间件 [jwt.middleware.ts](src/api/middleware/jwt.middleware.ts)
+  > 对请求头中的 `authorization` 进行校验，检查是否携带有效 `token`
+
 ### 数据库
 
 #### 使用 `TypeORM` 对 `MySQL` 进行操作
@@ -165,7 +189,7 @@ imports: [Koa, orm, hooks()]
 // ...
 ```
 `glasses` 表结构
-```MySQL
+```SQL
 SELECT * FROM inventory.glasses;CREATE TABLE `glasses` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `order_at` bigint NOT NULL,
@@ -191,6 +215,18 @@ SELECT * FROM inventory.glasses;CREATE TABLE `glasses` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+```
+
+`users` 表结构
+```SQL
+CREATE TABLE `users` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `account` varchar(45) DEFAULT NULL,
+  `password` varchar(45) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 
 ```
 
@@ -220,7 +256,7 @@ $ npx mdl-gen-midway -h localhost -p 3306 -d yourdbname -u root -x yourpassword 
 - `$ docker login`
 - `$ docker push shiverzheng/inventory:v1.0.0`
 - `$ cd ~/.ssh && ssh -i ***.pem root@***.**.**.**`
-- `$ docker pull`
+- `$ docker pull shiverzheng/inventory:v1.0.0`
 - `$ docker run -d -p 80:3000 shiverzheng/inventory:v1.0.0`
 
 ### 调试

@@ -6,7 +6,7 @@ export default function Header() {
   return (
 	<Layout.Header>
 		<div className='header-container'>
-			客户配镜登记
+			客户配镜管理系统
 		</div>
 	</Layout.Header>
   )

@@ -2,7 +2,7 @@ import { createConfiguration, hooks } from '@midwayjs/hooks'
 import * as Koa from '@midwayjs/koa'
 import * as orm from '@midwayjs/orm'
 import * as dotenv from 'dotenv'
-import JWT from './middleware/JWT'
+import jwtMiddleware from './middleware/jwt.middleware'
 
 dotenv.config()
 
@@ -14,7 +14,7 @@ export default createConfiguration({
         Koa,
         orm,
         hooks({
-            middleware: [JWT]
+            middleware: [jwtMiddleware]
         })
     ],
     importConfigs: [

@@ -132,6 +132,7 @@ export default function Classes() {
 		setLoaging(true)
 		const res = await getGlassesList({ query: toPageQuery(p) })
 		setLoaging(false)
+		if (!res) return
 		const { data, total } = res
 		setTotal(total)
 		setGlasses(data)
@@ -182,6 +183,7 @@ export default function Classes() {
 		const res = await searchGlasses({ query })
 		setLoaging(false)
 
+		if (!res) return
 		const { data, total } = res
 		setTotal(total)
 		setGlasses(data)

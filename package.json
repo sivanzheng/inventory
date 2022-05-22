@@ -19,7 +19,6 @@
     "dotenv": "^16.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
-    "koa-jwt": "^4.0.3",
     "lodash": "^4.17.21",
     "mysql": "^2.18.1",
     "q": "^1.5.1",
