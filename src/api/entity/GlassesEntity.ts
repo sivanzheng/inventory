@@ -54,6 +54,9 @@ export class Glasses {
   @Column('json', { name: 'eyes', nullable: true })
   eyes: Eye[] | null
 
+  @Column('float', { name: 'add', nullable: true, precision: 12 })
+  add: number | null
+
   @Column('float', { name: 'sum_pd', nullable: true, precision: 12 })
   sumPD: number | null
 

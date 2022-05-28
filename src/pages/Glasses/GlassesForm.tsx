@@ -31,13 +31,13 @@ export default function GlassesForm(props: Props) {
 				form.setFieldsValue({ amount: framePrice + glassPrice })
 			}
 		}
-		// if (id === 'eyes_0_pd' || id === 'eyes_1_pd') {
-		// 	const lpd = form.getFieldValue(['eyes', 0, 'pd'])
-		// 	const rpd = form.getFieldValue(['eyes', 1, 'pd'])
-		// 	if (lpd && rpd) {
-		// 		form.setFieldsValue({ sumPD: lpd + rpd })
-		// 	}
-		// }
+		if (id === 'eyes_0_pd' || id === 'eyes_1_pd') {
+			const lpd = form.getFieldValue(['eyes', 0, 'pd'])
+			const rpd = form.getFieldValue(['eyes', 1, 'pd'])
+			if (lpd && rpd) {
+				form.setFieldsValue({ sumPD: parseFloat(lpd) + parseFloat(rpd) })
+			}
+		}
 	}
 
 	const handleSave = () => {
@@ -135,36 +135,14 @@ export default function GlassesForm(props: Props) {
 			</Item>
 			<Divider style={{ marginTop: 0, marginBottom: 10 }} />
 			<Item
-				label='左眼球镜'
-				name={['eyes', 0, 'degreeS']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 246 }} />
-			</Item>
-			<Item
-				label='左眼柱镜'
-				name={['eyes', 0, 'degreeC']}
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 246 }} />
-			</Item>
-			<Item
-				label='左眼轴向'
-				name={['eyes', 0, 'axial']}
-				style={{ marginBottom: 10 }}
-			>
-				<Input style={{ width: 246 }} />
-			</Item>
-			<Item
-				label='右眼球镜'
+				label={<span>右眼球镜<b>R</b></span>}
 				name={['eyes', 1, 'degreeS']}
 				style={{ marginBottom: 10 }}
 			>
 				<InputNumber style={{ width: 246 }} />
 			</Item>
-
 			<Item
-				label='右眼柱镜'
+				label={<span>右眼柱镜<b>R</b></span>}
 				name={['eyes', 1, 'degreeC']}
 				style={{ marginBottom: 10 }}
 			>
@@ -172,36 +150,71 @@ export default function GlassesForm(props: Props) {
 			</Item>
 
 			<Item
-				label='右眼轴向'
+				label={<span>右眼轴向<b>R</b></span>}
 				name={['eyes', 1, 'axial']}
 				style={{ marginBottom: 10 }}
 			>
 				<Input style={{ width: 246 }} />
 			</Item>
 			<Item
-				label='右眼瞳高(RPH)'
+				label={<span>左眼球镜<b>L</b></span>}
+				name={['eyes', 0, 'degreeS']}
+				style={{ marginBottom: 10 }}
+			>
+				<InputNumber style={{ width: 246 }} />
+			</Item>
+			<Item
+				label={<span>左眼柱镜<b>L</b></span>}
+				name={['eyes', 0, 'degreeC']}
+				style={{ marginBottom: 10 }}
+			>
+				<InputNumber style={{ width: 246 }} />
+			</Item>
+			<Item
+				label={<span>左眼轴向<b>L</b></span>}
+				name={['eyes', 0, 'axial']}
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 246 }} />
+			</Item>
+			<Item
+				label={<span>右眼瞳高<b>RPH</b></span>}
 				name={['eyes', 1, 'ph']}
 				style={{ marginBottom: 10 }}
 			>
 				<Input style={{ width: 427 }} />
 			</Item>
 			<Item
-				label='左眼瞳高(LPH)'
+				label={<span>左眼瞳高<b>LPH</b></span>}
 				name={['eyes', 0, 'ph']}
 				style={{ marginBottom: 10 }}
 			>
 				<Input style={{ width: 427 }} />
 			</Item>
 			<Item
-				label='右眼瞳距(RPD)'
+				label={<span>右眼瞳距<b>RPD</b></span>}
 				name={['eyes', 1, 'pd']}
 				style={{ marginBottom: 10 }}
 			>
 				<Input style={{ width: 427 }} />
 			</Item>
 			<Item
-				label='左眼瞳距(LPD)'
+				label={<span>左眼瞳距<b>LPD</b></span>}
 				name={['eyes', 0, 'pd']}
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 427 }} />
+			</Item>
+			<Item
+				label='ADD'
+				name='add'
+				style={{ marginBottom: 10 }}
+			>
+				<Input style={{ width: 427 }} />
+			</Item>
+			<Item
+				label='瞳距'
+				name='sumPD'
 				style={{ marginBottom: 10 }}
 			>
 				<Input style={{ width: 427 }} />
@@ -225,14 +238,6 @@ export default function GlassesForm(props: Props) {
 			{/* <Item
 				label='折射率'
 				name='indexOfRefraction'
-				style={{ marginBottom: 10 }}
-			>
-				<InputNumber style={{ width: 188 }} />
-			</Item> */}
-
-			{/* <Item
-				label='远用瞳距'
-				name='sumPD'
 				style={{ marginBottom: 10 }}
 			>
 				<InputNumber style={{ width: 188 }} />
