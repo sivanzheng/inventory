@@ -1,10 +1,10 @@
 {
   "name": "inventory",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
-    "start": "hooks build && hooks start",
-    "dev": "hooks dev",
+    "start": "hooks build && MIDWAY_SERVER_ENV=prod hooks start",
+    "dev": "MIDWAY_SERVER_ENV=dev hooks dev",
     "build": "hooks build"
   },
   "dependencies": {

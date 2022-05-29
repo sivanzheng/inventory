@@ -6,6 +6,10 @@ import jwtMiddleware from './middleware/jwt.middleware'
 
 dotenv.config()
 
+console.log('\n')
+console.log('Current environment:', process.env.MIDWAY_SERVER_ENV)
+console.log('Ready to connect: ',  process.env.HOST.slice(0, 12), ':', process.env.PORT)
+
 /**
  * setup midway server
  */
