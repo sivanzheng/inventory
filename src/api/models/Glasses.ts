@@ -6,8 +6,8 @@ export enum LR {
 export interface Eye {
 	lr: LR
 	glassCount: number
-	degreeS: string 
-	degreeC: string 
+	degreeS: string
+	degreeC: string
 	axial: string
 	pd: string
 	ph: string
@@ -22,8 +22,8 @@ export default interface Glasses {
 	frameBrand: string
 	frameModel: string
 	framePrice: number
-	frameHeight: string 
-	frameSize: string 
+	frameHeight: string
+	frameSize: string
 	glassBrand: string
 	glassModel: string
 	glassPrice: number

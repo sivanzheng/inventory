@@ -45,9 +45,9 @@ export class Glasses {
   glassPrice: number | null
 
   @Column('float', {
-    name: 'index_of_refraction',
-    nullable: true,
-    precision: 12,
+      name: 'index_of_refraction',
+      nullable: true,
+      precision: 12,
   })
   indexOfRefraction: number | null
 
@@ -67,16 +67,16 @@ export class Glasses {
   comment: string | null
 
   @Column('timestamp', {
-    name: 'created_at',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
+      name: 'created_at',
+      nullable: true,
+      default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: Date | null
 
   @Column('timestamp', {
-    name: 'updated_at',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
+      name: 'updated_at',
+      nullable: true,
+      default: () => 'CURRENT_TIMESTAMP',
   })
   updated_at: Date | null
 
