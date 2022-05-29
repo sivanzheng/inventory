@@ -1,0 +1,36 @@
+{
+	"plugins": [
+		"react"
+	],
+	"extends": [
+		"./node_modules/mwts/",
+		"plugin:react/recommended"
+	],
+	"ignorePatterns": [
+		"node_modules",
+		"dist",
+		"output/*"
+	],
+	"rules": {
+		"prettier/prettier": "Off",
+		"indent": [
+			"error",
+			4,
+			{
+				"ignoredNodes": [
+					"JSXElement"
+				]
+			}
+		],
+		"react/jsx-indent": [
+			"error",
+			4
+		],
+		"node/no-extraneous-import": "Off"
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	}
+}

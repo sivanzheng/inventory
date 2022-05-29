@@ -9,6 +9,6 @@ export interface SortRequest {
 }
 
 export declare enum Order {
-    ASC = "ASC",
-    DESC = "DESC"
+    ASC = 'ASC',
+    DESC = 'DESC'
 }

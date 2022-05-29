@@ -33,7 +33,7 @@ export const createOrSaveGlasses = Api(
             const res = await useEntityModel(GlassesEntity).save(glassesEntity)
             return res
         } else {
-            const newGlasses = new GlassesEntity() 
+            const newGlasses = new GlassesEntity()
             newGlasses.orderAt = glasses.orderAt
             newGlasses.name = glasses.name.trim()
             newGlasses.orderID = glasses.orderID.trim()
@@ -87,11 +87,11 @@ export const getGlassesList = Api(
             .take(s)
             .skip((p - 1) * s)
             .getManyAndCount()
-        
+
         return {
             data: records[0],
             total: records[1]
-        } 
+        }
     }
 )
 
@@ -130,10 +130,10 @@ export const searchGlasses = Api(
                 take: s,
                 skip: (p - 1) * s
             })
-        
+
         return {
             data: records[0],
             total: records[1]
-        } 
+        }
     }
 )

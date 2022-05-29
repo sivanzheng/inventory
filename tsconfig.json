@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -15,11 +19,15 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["vite/client"],
+    "types": [
+      "vite/client"
+    ],
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@src/*": ["./src/*"]
+      "@src/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [

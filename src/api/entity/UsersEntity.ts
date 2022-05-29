@@ -14,16 +14,16 @@ export class Users {
   password: string
 
   @Column('timestamp', {
-    name: 'created_at',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
+      name: 'created_at',
+      nullable: true,
+      default: () => 'CURRENT_TIMESTAMP',
   })
   created_at: Date | null
 
   @Column('timestamp', {
-    name: 'updated_at',
-    nullable: true,
-    default: () => 'CURRENT_TIMESTAMP',
+      name: 'updated_at',
+      nullable: true,
+      default: () => 'CURRENT_TIMESTAMP',
   })
   updated_at: Date | null
 }
