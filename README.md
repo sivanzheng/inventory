@@ -22,6 +22,9 @@ npx degit https://github.com/midwayjs/hooks/examples/react ./inventory
 
 ```
 ├── .dockerignore
+├── .github
+│   ├── workflows
+│   │   └── devops.yml              // 自动化部署
 ├── .env                            // RDS密钥 JWT配置
 ├── Dockerfile
 ├── LICENSE
@@ -268,6 +271,82 @@ $ docker run -d <image_name> tail -f /dev/null
 ```
 将 `hooks build && hooks start` 一并写入镜像启动命令可以解决 0 退出问题
 
-### TODO
+### Github Actions
 
-Github Actions CI/CD 
+使用 Github Actions 实现 CI/CD
+
+1. 在仓库 - [Settings] - [Secrets] - [Actions] 中添加所需的各种配置
+
+2. 在 .github/workflows/devops.yml 创建[工作流自述文件](.github/workflows/devops.yml)
+
+```yml
+# 工作流名称
+name: Docker image CI/CD
+
+# 指定当 master 有 push 或者 pull request 的时候执行 
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# 指定 jobs
+jobs:
+  # 构建
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    steps:
+    # 使用 actions/checkout ，将代码检出 ubuntu 上
+    - uses: actions/checkout@v2
+    # 创建 Midway 服务器配置
+    - run: |
+        echo HOST=${{ secrets.MYSQL_HOST }} > .env
+        echo PORT=${{ secrets.MYSQL_PORT }} >> .env
+        echo USERNAME=${{ secrets.MYSQL_USERNAME }} >> .env
+        echo PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env
+        echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+        echo JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }} >> .env
+    
+    # 创建构建镜像
+    - name: Build image
+      run: docker build . -t ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+
+    # 使用 login-action 登录到 Docker Hub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    # 将镜像推送到 Dokcer Hub 仓库
+    - name: Push image to Docker Hub
+      run: docker push ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+  
+  # 部署
+  deploy:
+    name: Pull and run image
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        # 使用 appleboy/ssh-action 登录服务器
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          port: ${{ secrets.HOST_PORT }}
+          srcipt: |
+            # 停止当前容器 $(过滤出运行中 inventory 容器 ID)
+            docker stop $(docker ps -a | grep ${{ secrets.DOCKER_REPOSITORY }} | grep Up | awk '{print $1}')
+            # 删除容器 $(过滤退出的 inventory 容器 ID)
+            docker rm -f $(docker ps -a | grep ${{ secrets.DOCKER_REPOSITORY }} | grep Exited | awk '{print $1}')
+            # 删除镜像 $(获取最新的 inventory 镜像 ID)
+            docker rmi -f $(docker images ${{ secrets.DOCKER_REPOSITORY }}* -q | awk 'NR==1{print $1}')
+            # 拉取新镜像 
+            docker pull ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+            # 运行新镜像 
+            docker run -d -p 80:3000 ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+
+```

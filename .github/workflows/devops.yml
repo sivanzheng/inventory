@@ -1,0 +1,52 @@
+name: Docker image CI/CD
+
+on:
+  push:
+    branches: [ master, feat/workflows ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build and push image
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        echo HOST=${{ secrets.MYSQL_HOST }} > .env
+        echo PORT=${{ secrets.MYSQL_PORT }} >> .env
+        echo USERNAME=${{ secrets.MYSQL_USERNAME }} >> .env
+        echo PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env
+        echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+        echo JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }} >> .env
+    
+    - name: Build image
+      run: docker build . -t ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+    - name: Push image to Docker Hub
+      run: docker push ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+  
+  deploy:
+    name: Pull and run image
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          port: ${{ secrets.HOST_PORT }}
+          script: |
+            docker stop $(docker ps -a | grep ${{ secrets.DOCKER_REPOSITORY }} | grep Up | awk '{print $1}')
+            docker rm -f $(docker ps -a | grep ${{ secrets.DOCKER_REPOSITORY }} | grep Exited | awk '{print $1}')
+            docker rmi -f $(docker images ${{ secrets.DOCKER_REPOSITORY }}* -q | awk 'NR==1{print $1}')
+            docker pull ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
+            docker run -d -p 80:3000 ${{ secrets.DOCKER_REPOSITORY }}:v1.1.0
