@@ -448,7 +448,8 @@ export default function Classes() {
                         title: 'ADD',
                         dataIndex: 'add',
                         key: 'add',
-                        width: 50,
+                        width: 65,
+                        render: toFixed2
                     },
                     {
                         title: '镜架单价',
