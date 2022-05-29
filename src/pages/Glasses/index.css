@@ -1,0 +1,12 @@
+.cell {
+	margin: -8px;
+}
+
+.cell div {
+	padding: 8px;
+	box-sizing: border-box;
+}
+
+.cell div:first-child {
+	border-bottom: 1px solid #f0f0f0;
+}

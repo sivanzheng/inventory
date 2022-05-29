@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import Q from 'q'
 import moment from 'moment'
-import { cloneDeep } from 'lodash'
-import { Table, TablePaginationConfig, Button, message, Modal, Space, Form, Input, Divider, DatePicker } from 'antd'
+import { Typography, Table, TablePaginationConfig, Button, message, Modal, Space, Form, Input, Divider, DatePicker } from 'antd'
 import { ExclamationCircleOutlined, PlusOutlined, RedoOutlined, SearchOutlined } from '@ant-design/icons'
 import { getGlassesList, createOrSaveGlasses, deleteGlasses, searchGlasses } from '@src/api/controller/glasses'
-import Glasses, { LR, GlassesRow } from '@src/api/models/Glasses'
+import Glasses, { LR } from '@src/api/models/Glasses'
 import { PageRequest } from '@src/api/models/Page'
 import GlassesForm from './GlassesForm'
+import './index.css'
 
-const toFixed2 = (value: number) => {
-	if (!value) return 0
-	if (value > 0) {
-		return `+${value.toFixed(2)}`
+const toFixed2 = (value: number | string) => {
+	let val = 0
+	if (typeof value === 'string') {
+		val = parseFloat(value)
+	} else {
+		val = value
 	}
-	if (value < 0) return value.toFixed(2)
+	if (val > 0) {
+		return `+${val.toFixed(2)}`
+	}
+	if (val < 0) return val.toFixed(2)
+	return 0
 }
 
 const toPageQuery = (pageReq: PageRequest) => ({
@@ -27,45 +33,13 @@ const LRLabel = {
 	[LR.R]: 'R'
 }
 
-const formatGlassesList = (glasses: Glasses[]): GlassesRow[] => {
-	const result = []
-	const data = cloneDeep(glasses)
-	for (const row of data) {
-		const eyes = row.eyes
-		delete row.eyes
-		
-		const rightEye = eyes.find(v => v.lr === LR.R)
-		if (rightEye) {
-			result.push({
-				...row,
-				...rightEye,
-				rowKey: `${row.id}-${LR.R}`
-			})
-		} else {
-			result.push({
-				...row,
-				rowKey: `${row.id}-${LR.R}`
-			})
-		}
-		
-		const leftEye = eyes.find(v => v.lr === LR.L)
-		if (leftEye) {
-			result.push({
-				...row,
-				...leftEye,
-				rowKey: `${row.id}-${LR.L}`
-			})
-		} else {
-			result.push({
-				...row,
-				rowKey: `${row.id}-${LR.L}`
-			})
-		}
-	}
-	return result
-}
 
-const mergeRow = (row: GlassesRow, index: number) => {
+const sortData = (glasses: Glasses[]): Glasses[] => glasses.map((v) => {
+	v.eyes.sort((a, b) => b.lr - a.lr)
+	return v
+})
+
+const mergeRow = (row: Glasses, index: number) => {
 	if (index % 2 === 0) return { rowSpan: 2 }
 	return { rowSpan: 0 }
 }
@@ -77,7 +51,7 @@ export default function Classes() {
 	const [total, setTotal] = useState<number>(0)
 	const [loading, setLoaging] = useState<boolean>(false)
 	const [glasses, setGlasses] = useState<Glasses[]>([])
-	const [dataSource, setDataSource] = useState<GlassesRow[]>([])
+	const [dataSource, setDataSource] = useState<Glasses[]>([])
 
 	const handleChange = (pagination: TablePaginationConfig) => {
 		setPage({ page: pagination.current, size: pagination.pageSize })
@@ -93,7 +67,7 @@ export default function Classes() {
 		}
 	}
 
-	const handleEdit = async (row: GlassesRow) => {
+	const handleEdit = async (row: Glasses) => {
 		const data = glasses.find(v => v.id === row.id)
 		if (!data) {
 			message.warn('找不到需要的数据')
@@ -108,7 +82,7 @@ export default function Classes() {
 		}
 	}
 
-	const handleDelete = (row: GlassesRow) => {
+	const handleDelete = (row: Glasses) => {
 		Modal.confirm({
 			title: '确定删除这条记录吗?',
 			icon: <ExclamationCircleOutlined />,
@@ -136,7 +110,7 @@ export default function Classes() {
 		const { data, total } = res
 		setTotal(total)
 		setGlasses(data)
-		const formated = formatGlassesList(data)
+		const formated = sortData(data)
 		setDataSource(formated)
 	}
 
@@ -187,7 +161,7 @@ export default function Classes() {
 		const { data, total } = res
 		setTotal(total)
 		setGlasses(data)
-		const formated = formatGlassesList(data)
+		const formated = sortData(data)
 		setDataSource(formated)
 		setPage({ page: 1, size: page.size })
 		setIsSearch(false)
@@ -236,8 +210,11 @@ export default function Classes() {
 					hideOnSinglePage: false,
 					showSizeChanger: true,
 					pageSize: page.size,
+					showTotal: ((total) => {
+						return `共 ${total} 条`
+					})
 				}}
-				rowKey='rowKey'
+				rowKey='id'
 				loading={loading}
 				columns={[
 					{
@@ -246,7 +223,6 @@ export default function Classes() {
 						key: 'orderAt',
 						width: 90,
 						fixed: 'left',
-						onCell: mergeRow,
 						render: (value) => moment(Number(value)).format('YYYY-MM-DD')
 					},
 					{
@@ -255,56 +231,48 @@ export default function Classes() {
 						key: 'name',
 						width: 90,
 						fixed: 'left',
-						onCell: mergeRow
 					},
 					{
 						title: '单号',
 						dataIndex: 'orderID',
 						key: 'orderID',
 						width: 90,
-						onCell: mergeRow
 					},
 					{
 						title: '电话',
 						dataIndex: 'phone',
 						key: 'phone',
 						width: 120,
-						onCell: mergeRow
 					},
 					{
 						title: '镜架品牌',
 						dataIndex: 'frameBrand',
 						key: 'frameBrand',
 						width: 100,
-						onCell: mergeRow
 					},
 					{
 						title: '镜架型号',
 						dataIndex: 'frameModel',
 						key: 'frameModel',
 						width: 120,
-						onCell: mergeRow
 					},
 					{
 						title: '镜框高度',
 						dataIndex: 'frameHeight',
 						key: 'frameHeight',
-						width: 80,
-						onCell: mergeRow
+						width: 50,
 					},
 					{
 						title: '镜框尺寸',
 						dataIndex: 'frameSize',
 						key: 'frameSize',
 						width: 80,
-						onCell: mergeRow
 					},
 					{
 						title: '镜片品牌',
 						dataIndex: 'glassBrand',
 						key: 'glassBrand',
 						width: 100,
-						onCell: mergeRow
 					},
 					// {
 					// 	title: '折射率',
@@ -318,14 +286,19 @@ export default function Classes() {
 						dataIndex: 'glassModel',
 						key: 'glassModel',
 						width: 150,
-						onCell: mergeRow
 					},
 					{
 						title: 'L/R',
-						dataIndex: 'lr',
 						key: 'lr',
 						width: 40,
-						render: (lr: LR) => LRLabel[lr],
+						render: (_, row: Glasses) => {
+							return (
+								<div className='cell'>
+									<div>{LRLabel[row.eyes[0].lr]}</div>
+									<div>{LRLabel[row.eyes[1].lr]}</div>
+								</div>
+							)
+						},
 					},
 					// {
 					// 	title: '片数',
@@ -336,53 +309,104 @@ export default function Classes() {
 					{
 						title: '度数',
 						children: [
-							{ 
+							{
 								title: '球镜',
-								dataIndex: 'degreeS',
 								key: 'degreeS',
-								width: 80,
-								render: toFixed2
+								width: 60,
+								render: (_, row: Glasses) => {
+									return (
+										<div className='cell'>
+											<div>{toFixed2(row.eyes[0].degreeS)}</div>
+											<div>{toFixed2(row.eyes[1].degreeS)}</div>
+										</div>
+									)
+								},
 							},
 							{
 								title: '柱镜',
-								dataIndex: 'degreeC',
+								dataIndex: ['eyes', 0, 'degreeC'],
 								key: 'degreeC',
-								width: 80,
-								render: toFixed2
+								width: 60,
+								render: (_, row: Glasses) => {
+									return (
+										<div className='cell'>
+											<div>{toFixed2(row.eyes[0].degreeC)}</div>
+											<div>{toFixed2(row.eyes[1].degreeC)}</div>
+										</div>
+									)
+								},
 							},
 							{
 								title: '轴向',
 								dataIndex: 'axial',
 								key: 'axial',
-								width: 80,
+								width: 50,
+								render: (_, row: Glasses) => {
+									return (
+										<div className='cell'>
+											<div>{row.eyes[0].axial}</div>
+											<div>{row.eyes[1].axial}</div>
+										</div>
+									)
+								},
 							},
 						]
 					},
 					{
 						title: '瞳高(PH)',
-						dataIndex: 'ph',
 						key: 'ph',
-						width: 50,
+						width: 55,
+						render: (_, row: Glasses) => {
+							return (
+								<div className='cell'>
+									<div>{row.eyes[0].ph}</div>
+									<div>{row.eyes[1].ph}</div>
+								</div>
+							)
+						},
 					},
 					{
 						title: '瞳距(PD)',
-						dataIndex: 'pd',
 						key: 'pd',
 						width: 50,
+						render: (_, row: Glasses) => {
+							return (
+								<div className='cell'>
+									<div>{row.eyes[0].pd}</div>
+									<div>{row.eyes[1].pd}</div>
+								</div>
+							)
+						},
 					},
 					{
 						title: '远用瞳距',
 						dataIndex: 'sumPD',
 						key: 'sumPD',
+						width: 45,
+						render: (value: number, row: Glasses) => {
+							return (
+								<>
+									{
+										value ? value : row.eyes.reduce((p, c) => {
+											if (c.pd) return p += parseFloat(c.pd)
+											return ''
+										}, 0)
+									}
+								</>
+							)
+						}
+					},
+					{
+						title: 'ADD',
+						dataIndex: 'add',
+						key: 'add',
 						width: 50,
-						onCell: mergeRow
 					},
 					{
 						title: '镜架单价',
 						dataIndex: 'framePrice',
 						key: 'framePrice',
 						width: 80,
-						onCell: mergeRow,
 						render: (value) => value ? `¥ ${value}` : ''
 					},
 					{
@@ -390,7 +414,6 @@ export default function Classes() {
 						dataIndex: 'glassPrice',
 						key: 'glassPrice',
 						width: 80,
-						onCell: mergeRow,
 						render: (value) => value ? `¥ ${value}` : ''
 					},
 					{
@@ -398,7 +421,6 @@ export default function Classes() {
 						dataIndex: 'amount',
 						key: 'amount',
 						width: 80,
-						onCell: mergeRow,
 						render: (value) => value ? `¥ ${value}` : ''
 					},
 					{
@@ -406,14 +428,12 @@ export default function Classes() {
 						dataIndex: 'comment',
 						key: 'comment',
 						width: 120,
-						onCell: mergeRow
 					},
 					{
 						title: '操作',
 						key: 'option',
 						fixed: 'right',
 						width: 115,
-						onCell: mergeRow,
 						render: (_, row) => (
 							<Button.Group size='small'>
 								<Button onClick={() => handleEdit(row)}>编辑</Button>

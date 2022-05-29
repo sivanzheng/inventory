@@ -29,6 +29,7 @@ export default interface Glasses {
 	glassPrice: number
 	indexOfRefraction: number
 	eyes: Eye[]
+	add: number
 	sumPD: number
 	amount: number
 	comment: string
